@@ -3,6 +3,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 
 import { Navbar } from "../components/Navbar";
+import { AuthProvider } from "../hooks/useAuth";
 
 import appCss from "../styles.css?url";
 
@@ -38,20 +39,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Navbar />
-        {children}
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
-        <Scripts />
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <TanStackDevtools
+            config={{
+              position: "bottom-right",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+          <Scripts />
+        </AuthProvider>
       </body>
     </html>
   );
