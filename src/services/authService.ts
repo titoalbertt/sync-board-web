@@ -1,11 +1,35 @@
-import { loginUseCase, registerUseCase } from "@/use-cases/authUseCase";
-
 export const authService = {
   async login(email: string, password: string) {
-    return await loginUseCase({ email, password });
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Login failed");
+    }
+
+    return await response.json();
   },
 
   async register(name: string, email: string, password: string) {
-    return await registerUseCase({ name, email, password });
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Registration failed");
+    }
+
+    return await response.json();
   },
 };

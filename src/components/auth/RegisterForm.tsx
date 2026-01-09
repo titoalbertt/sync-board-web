@@ -14,7 +14,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Link } from "@tanstack/react-router";
 import { authService } from "@/services/authService";
 import { setTokenToLocalStorage } from "@/lib/auth";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 interface RegisterFormData {
   name: string;

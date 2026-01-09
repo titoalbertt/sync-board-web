@@ -23,20 +23,20 @@ async function LoginComponent() {
       );
     }
 
-    const user = await database
+    const [user] = await database
       .select()
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
 
-    if (user.length === 0) {
+    if (!user) {
       return new Response(JSON.stringify({ message: "Invalid credentials" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    const isPasswordValid = await verifyPassword(password, user[0].password);
+    const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
       return new Response(JSON.stringify({ message: "Invalid credentials" }), {
@@ -46,15 +46,15 @@ async function LoginComponent() {
     }
 
     const token = generateToken({
-      userId: user[0].id,
-      email: user[0].email,
-      name: user[0].name,
+      userId: user.id,
+      email: user.email,
+      name: user.name,
     });
 
     return new Response(
       JSON.stringify({
         token,
-        user: { id: user[0].id, email: user[0].email, name: user[0].name },
+        user: { id: user.id, email: user.email, name: user.name },
       }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
