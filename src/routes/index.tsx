@@ -326,7 +326,7 @@ function App() {
                   <ul className="space-y-3">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <CheckCircle2 className="w-5 h-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-primary mr-3 shrink-0 mt-0.5" />
                         <span className="text-sm">{feature}</span>
                       </li>
                     ))}
@@ -437,7 +437,7 @@ function App() {
                 <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-lg">S</span>
                 </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <span className="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                   SyncBoard
                 </span>
               </div>
