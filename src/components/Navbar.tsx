@@ -1,12 +1,20 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-xl supports-backdrop-filter:bg-background/60 shadow-md">
@@ -60,12 +68,43 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="ghost" size="sm" className="hover-lift">
-              Sign In
-            </Button>
-            <Button size="sm" className="gradient-primary hover-lift shadow-md">
-              Get Started
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center space-x-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="" />
+                    <AvatarFallback>
+                      {user?.name?.charAt(0) || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium text-gray-700">
+                    {user?.name}
+                  </span>
+                </div>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hover-lift"
+                  asChild
+                >
+                  <a href="/login">Sign In</a>
+                </Button>
+                <Button
+                  size="sm"
+                  className="gradient-primary hover-lift shadow-md"
+                  asChild
+                >
+                  <a href="/register">Get Started</a>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -125,19 +164,48 @@ export function Navbar() {
               Blog
             </a>
             <div className="flex flex-col space-y-2 px-4 py-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-center"
-              >
-                Sign In
-              </Button>
-              <Button
-                size="sm"
-                className="w-full gradient-primary justify-center shadow-md"
-              >
-                Get Started
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <div className="flex items-center space-x-2 px-4 py-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src="" />
+                      <AvatarFallback>
+                        {user?.name?.charAt(0) || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium text-gray-700">
+                      {user?.name}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-center"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-center"
+                    asChild
+                  >
+                    <a href="/login">Sign In</a>
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="w-full gradient-primary justify-center shadow-md"
+                    asChild
+                  >
+                    <a href="/register">Get Started</a>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
